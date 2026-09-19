@@ -52,3 +52,4 @@ flake8 src tests
 mypy src
 isort --check-only src tests
 ```
+ 
