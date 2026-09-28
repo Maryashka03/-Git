@@ -2,6 +2,7 @@ import pytest
 
 from src.widget import get_date, mask_account_card
 
+
 @pytest.mark.parametrize(
     "account_card, expected",
     [
@@ -13,6 +14,7 @@ from src.widget import get_date, mask_account_card
 def test_mask_account_card(account_card, expected):
     assert mask_account_card(account_card) == expected
 
+
 @pytest.fixture
 def dates():
     return [
@@ -21,9 +23,11 @@ def dates():
         ("2020-01-01T00:00:00", "01.01.2020"),
     ]
 
+
 def test_get_date(dates):
     for date_string, expected in dates:
         assert get_date(date_string) == expected
+
 
 @pytest.mark.parametrize(
     "invalid_data",
