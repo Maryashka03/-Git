@@ -1,54 +1,71 @@
 # Bank Widget
 
-Учебный проект для обработки банковских операций клиента.
+Учебный проект для обработки банковских операций.
 
-## Цель проекта
+## Возможности
 
-Проект содержит функции для фильтрации банковских операций по статусу
-и сортировки операций по дате.
+* Фильтрация банковских операций по статусу.
+* Сортировка операций по дате.
+* Загрузка списка операций из JSON-файла.
+* Конвертация сумм транзакций в рубли.
 
 ## Установка
 
-Клонируйте репозиторий:
+Установите зависимости:
 
-```bash
-git clone <ссылка-на-ваш-репозиторий>
-cd bankwidget
-```
+   bash
+pip install requests python-dotenv pytest flake8 mypy isort
 
-При необходимости установите инструменты проверки:
 
-```bash
-pip install pytest flake8 mypy isort
-```
+## Загрузка операций из JSON
 
-## Использование
+Функция `load_transactions` из `src/utils.py` загружает данные из JSON-файла. Если файл отсутствует, содержит некорректный JSON или данные не являются списком словарей, функция возвращает пустой список.
 
-```python
-from src.processing import filter_by_state, sort_by_date
+Пример:
 
-operations = [
-    {"id": 1, "state": "EXECUTED", "date": "2019-07-03T18:35:29"},
-    {"id": 2, "state": "CANCELED", "date": "2018-09-12T21:27:25"},
-]
+   python
+from src.utils import load_transactions
 
-print(filter_by_state(operations))
-print(filter_by_state(operations, "CANCELED"))
+operations = load_transactions("data/operations.json")
+print(operations)
 
-print(sort_by_date(operations))
-print(sort_by_date(operations, descending=False))
-```
 
-`filter_by_state` по умолчанию возвращает операции со статусом `EXECUTED`.
+## Конвертация валют
 
-`sort_by_date` по умолчанию сортирует операции по убыванию даты,
-то есть от самой новой к самой старой.
+Функция `convert_to_rub` из `src/external_api.py` возвращает сумму транзакции в рублях. Для USD и EUR используется API обменных курсов.
 
-## Проверка
+Для настройки создайте файл `.env` в корне проекта и добавьте API-ключ:
 
-```bash
-pytest
-flake8 src tests
-mypy src
-isort --check-only src tests
-```
+   text
+EXCHANGE_RATES_API_KEY=ваш_api_ключ
+
+
+Шаблон переменных окружения находится в `.env.example`. Не публикуйте настоящий API-ключ и не добавляйте файл `.env` в Git.
+
+Пример вызова:
+
+   python
+from src.external_api import convert_to_rub
+
+transaction = {
+    "operationAmount": {
+        "amount": "1500",
+        "currency": {"code": "RUB"}
+    }
+}
+
+print(convert_to_rub(transaction))
+
+
+## Проверка проекта
+
+Запуск тестов:
+
+   bash
+python -m pytest -q
+
+
+Проверка оформления кода:
+
+   bash
+python -m flake8 src tests
