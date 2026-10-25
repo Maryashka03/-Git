@@ -52,3 +52,26 @@ flake8 src tests
 mypy src
 isort --check-only src tests
 ```
+
+
+## Чтение CSV и Excel-файлов
+
+В модуле `src.readers` реализованы функции для чтения финансовых операций из файлов CSV и Excel.
+
+* `read_csv_transactions(file_path)` — читает CSV-файл и возвращает список словарей.
+* `read_excel_transactions(file_path)` — читает Excel-файл XLSX и возвращает список словарей.
+
+Для работы с файлами используются библиотеки `pandas` и `openpyxl`.
+
+Установка зависимостей:
+
+```bash
+pip install -r requirements.txt
+```
+
+Запуск тестов:
+
+```bash
+python -m pytest
+```
+
