@@ -6,3 +6,7 @@ venv/
 .idea/
 .vscode/
 *.pyc
+.coverage
+.env
+logs/*.log
+__pycache__/
