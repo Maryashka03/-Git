@@ -1,54 +1,99 @@
-# Bank Widget
+Bank Widget — приложение для анализа банковских операций
 
-Учебный проект для обработки банковских операций клиента.
+Описание проекта
 
-## Цель проекта
+Учебное приложение для анализа банковских операций из Excel-файла.
 
-Проект содержит функции для фильтрации банковских операций по статусу
-и сортировки операций по дате.
+Приложение позволяет:
 
-## Установка
+- Загружать банковские операции из Excel.
+- Формировать главную страницу с приветствием, информацией по картам и последними операциями.
+- Получать курсы валют и цены акций через внешние API.
+- Формировать страницу с расходами и доходами за выбранный период.
+- Искать операции по описанию и категории.
+- Формировать отчёт о расходах по выбранной категории за последние три месяца.
+- Сохранять отчёты в CSV-файл.
+
+Структура проекта
+
+src/
+    __init__.py
+    main.py
+    utils.py
+    views.py
+    external_api.py
+    services.py
+    reports.py
+
+data/
+    operations.xls
+
+tests/
+    test_utils.py
+    test_views.py
+    test_external_api.py
+    test_services.py
+    test_reports.py
+
+user_settings.json
+requirements.txt
+README.md
+
+Установка
 
 Клонируйте репозиторий:
 
-```bash
-git clone <ссылка-на-ваш-репозиторий>
-cd bankwidget
-```
+git clone https://github.com/Maryashka03/-Git.git
+cd -Git
 
-При необходимости установите инструменты проверки:
+Установите зависимости:
 
-```bash
-pip install pytest flake8 mypy isort
-```
+pip install -r requirements.txt
 
-## Использование
+Настройки
 
-```python
-from src.processing import filter_by_state, sort_by_date
+В файле "user_settings.json" можно указать необходимые валюты и акции:
 
-operations = [
-    {"id": 1, "state": "EXECUTED", "date": "2019-07-03T18:35:29"},
-    {"id": 2, "state": "CANCELED", "date": "2018-09-12T21:27:25"},
-]
+{
+    "user_currencies": ["USD", "EUR"],
+    "user_stocks": ["AAPL", "MSFT", "GOOGL"]
+}
 
-print(filter_by_state(operations))
-print(filter_by_state(operations, "CANCELED"))
+Для получения курсов валют и цен акций используются API-ключи.
 
-print(sort_by_date(operations))
-print(sort_by_date(operations, descending=False))
-```
+Создайте файл ".env" в корне проекта и добавьте:
 
-`filter_by_state` по умолчанию возвращает операции со статусом `EXECUTED`.
+EXCHANGE_RATES_API_KEY=ваш_ключ
+ALPHA_VANTAGE_API_KEY=ваш_ключ
 
-`sort_by_date` по умолчанию сортирует операции по убыванию даты,
-то есть от самой новой к самой старой.
+Без API-ключей приложение может запускаться, но данные о валютах и акциях не будут отображаться.
 
-## Проверка
+Запуск приложения
 
-```bash
-pytest
-flake8 src tests
-mypy src
-isort --check-only src tests
-```
+Из корневой папки проекта выполните:
+
+python -m src.main
+
+Проверка проекта
+
+Запуск тестов:
+
+python -m pytest -v
+
+Проверка оформления кода:
+
+python -m flake8 src tests
+
+Проверка типов:
+
+python -m mypy src
+
+Используемые библиотеки
+
+- pandas
+- requests
+- python-dotenv
+- xlrd
+- pytest
+- flake8
+- mypy
