@@ -6,3 +6,9 @@ venv/
 .idea/
 .vscode/
 *.pyc
+
+# Служебные файлы проекта
+.coverage
+report.csv
+.env
+logs/*.log
